@@ -1,0 +1,15 @@
+{ "name": "animation-timer"
+, "description": "timing of animation frames"
+, "version": "0.1.1"
+, "license" : "GPL-3.0"
+, "homepage": "https://github.com/HarrySarson/animation-timer"
+, "author": "Harry Sarson (https://harrysarson.magix.net)"
+, "repository": {"type": "git", "url": "git://github.com/HarrySarson/animation-timer.git"}
+, "main": "index.js"
+, "keywords": ["interval", "node", "browser", "animation", "timing"]
+, "dependencies": {
+    "performance-now": "0.2.x"
+,   "requestanimationframe": "0.0.x"
+,   "events": "1.1.x" 
+  }
+}
