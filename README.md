@@ -12,8 +12,8 @@ $ npm install animation-timer
 
 ## Usage
 
-Animations can either be contained in a callback given to the animation function where the controller object
-is passed to the function as a parameter or controlled using the 
+Animations can either be contained in a callback where the controller object
+is passed to the function or controlled using the 
 object returned by the function (or both in tandem)
 
 ```javascript
@@ -83,7 +83,7 @@ let controller = animation(function(controller){
 ```
 
 
-Creates a new Animation controller which can be accessed through the call back or as a variable
+Creates a new animation controller which can be accessed through the call back or as a variable
 
 ### controller.on(event, handler)
 
