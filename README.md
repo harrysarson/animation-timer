@@ -89,7 +89,7 @@ Creates a new animation controller which can be accessed through the call back o
 
 Attaches the handler to 'event' so that when 'event' is emmitted handler will be called. Multiple handlers can be attached
 to a single event. Returns the controller so calls can be chained. For a list of events produced by the controller during animation
-[see ### contoller.emit](#controlleremitevent-data)
+[see contoller.emit](#controlleremitevent-data)
 
 ```javascript
 animation.on('start', function(data){
@@ -115,20 +115,20 @@ Emits 'event' and calls all handlers attached to that event passing `data` to ea
 Returns the controller so calls can be chained.
 During animation the following events will be emitted by the controller:
 
-#### 'start': emitted when animation starts. 
+'start': emitted when animation starts. 
 
 **Note** This will only be emitted if animation is not already running when controller.start() is called. 
 controller.restart() will always cause 'start' to be emitted.
 
-#### 'animate': emitted once every frame, attach a handler to draw the frames of the animation.
+'animate': emitted once every frame, attach a handler to draw the frames of the animation.
 
-#### 'stop': emitted when animation stops. 
+'stop': emitted when animation stops. 
 
 When an event is emitted by the controller the handler will be passed as the an object with these properties:
 
-#### time: time in milliseconds since animation started in miliseconds (calls to start after animation is already running will NOT reset this).
-#### deltatime: time since last frame in miliseconds.
-#### count: integer representing number of times animate has been emitted by the controller (i.e. the number of frames).
+time: time in milliseconds since animation started in miliseconds (calls to start after animation is already running will NOT reset this).
+deltatime: time since last frame in miliseconds.
+count: integer representing number of times animate has been emitted by the controller (i.e. the number of frames).
 
 **Note** This will only be emitted if animation is running when controller.stop() is called, 
 controller.restart() will emit 'stop' if animation is running when the function is called.
