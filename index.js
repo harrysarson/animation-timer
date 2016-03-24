@@ -103,23 +103,26 @@ module.exports = function animate(trigger) {
         starttime = 0,
         minrefresh = 0,
         controller = new Events(),
+        time = 0,
+        deltatime = 0,
+        count = 0,
         thisarg = {
-            time: 0,
-            deltatime: 0,
-            count: 0
+            get time      () { return time; }
+            get deltatime () { return deltatime; }
+            get count     () { return count; }
         },
         a = function () {
 
-            var lasttime = thisarg.time;
-            thisarg.time = now() - starttime;
-            thisarg.deltatime = thisarg.time - lasttime;
+            var lasttime = time;
+            time = now() - starttime;
+            deltatime = time - lasttime;
             
             if (cont) {
                 requestAnimationFrame(a);
                 if(minrefresh < thisarg.deltatime){
                     controller.emit('animate', thisarg);                    
                 }else{
-                    thisarg.time = lasttime;
+                    time = lasttime;
                 }
             } else {
                 animating = false;
@@ -130,14 +133,14 @@ module.exports = function animate(trigger) {
                 }
             }
             
-            thisarg.count++;
+            count++;
         },
         start = function () {
             /* start animation */
             cont = animating = true;
-            thisarg.time = 0;
-            thisarg.deltatime = 0;
-            thisarg.count = 0;
+            time = 0;
+            deltatime = 0;
+            count = 0;
             starttime = now();
             controller.emit('start', thisarg);
             requestAnimationFrame(a);
