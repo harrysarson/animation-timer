@@ -126,12 +126,9 @@ controller.restart() will always cause 'start' to be emitted.
 
 When an event is emitted by the controller the handler will be passed as the an object with these properties:
 
-time: time in milliseconds since animation started in miliseconds (calls to start after animation is already running will NOT reset this).
+time: time in milliseconds since animation started in miliseconds (calls to start after animation is already running will bot    reset this).
 deltatime: time since last frame in miliseconds.
 count: integer representing number of times animate has been emitted by the controller (i.e. the number of frames).
-
-**Note** This will only be emitted if animation is running when controller.stop() is called, 
-controller.restart() will emit 'stop' if animation is running when the function is called.
 
 ```javascript
 // emit custom event
