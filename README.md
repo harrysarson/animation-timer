@@ -1,2 +1,2 @@
 # animation-timer
-JavaScript module that creating the timing structure required for simple animations
+JavaScript module which provides timing structure required for simple animations
