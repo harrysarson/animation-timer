@@ -82,14 +82,36 @@ let controller = animation(function(controller){
 });
 ```
 
+### controller.minRefresh = 0
 
-Creates a new animation controller which can be accessed through the call back or as a variable
+Type: (number)
+
+Minimum time in milliseconds between frames
+
+### controller.animating -readonly-
+
+Type: (boolean)
+
+Readonly flag indicating whether the animation is running.
 
 ### controller.on(event, handler)
 
-Attaches the handler to 'event' so that when 'event' is emmitted handler will be called. Multiple handlers can be attached
-to a single event. Returns the controller so calls can be chained. For a list of events produced by the controller during animation
-[see contoller.emit](#controlleremitevent-data)
+Attaches the handler to `event` so that when `event` is emitted handler will be called. Multiple handlers can be attached
+to a single event. For a list of events produced by the controller during animation
+[see contoller.emit](#controlleremitevent-data).
+
+
+#### Arguments
+
+1. `event` (string): Event to attach handler to.
+
+2. `handler` (`function`): Function to be called when `event` is emmitted
+
+#### Returns
+(Object): Return `controller` so calls can be chained. 
+
+
+#### Example
 
 ```javascript
 animation.on('start', function(data){
@@ -97,62 +119,124 @@ animation.on('start', function(data){
 });
 ```
 
-#### event
-
-Type: `string`
-
-Event to attach handler to
-
-#### handler
-
-Type: `function`
-
-Function to be called when ever 'event' is emmitted
-
-### controller.emit(event, data)
+### controller.emit(event, [data])
 
 Emits 'event' and calls all handlers attached to that event passing `data` to each handler.
 Returns the controller so calls can be chained.
 During animation the following events will be emitted by the controller:
 
-****'start':** emitted when animation starts. 
+**'start':** Emitted when animation starts. 'start' will only be emitted if animation is not already running when `controller.start()` is called. 
+`controller.restart()` will always cause 'start' to be emitted.
 
-**Note** This will only be emitted if animation is not already running when controller.start() is called. 
-controller.restart() will always cause 'start' to be emitted.
+**'animate'**: Emitted once every frame, attach a handler to draw the frames of the animation.
 
-*'animate': emitted once every frame, attach a handler to draw the frames of the animation.
-
-*'stop': emitted when animation stops. 
+**'stop'**: Emitted when animation stops, due to `controller.stop()` or `controller.restart()` being called whilst animation is running. 
 
 When an event is emitted by the controller the handler will be passed as the an object with these properties:
 
-*time: time in milliseconds since animation started in miliseconds (calls to start after animation is already running will bot    reset this).
-*deltatime: time since last frame in miliseconds.
-*count: integer representing number of times animate has been emitted by the controller (i.e. the number of frames).
+* **time** Milliseconds since animation started in (calls to start after animation is already running will not reset this).
+* **deltatime** Milliseconds between last frame and this frame.
+* **count** Number of times the event 'animate' has been emitted by the controller (i.e. the number of frames).
+
+
+
+#### Arguments
+
+1. `event` (string): Event to emit
+
+2. `[data = {}]` (Object): Data to send to the handler
+
+#### Returns
+
+(Object): Return `controller` so calls can be chained. 
+
+
+#### Example
 
 ```javascript
 // emit custom event
 controller.emit('user-input', {x: 45, y: 87});
 ```
 
-### controller.start
+### controller.start()
 
 Start animation. 
-**Note** If start is called when the animation  is already running the animation 'stop' event is not emitted. 
-Returns the controller so calls can be chained
- *
- *          restart(): stops animation ('stop' is emitted if (and only if) animation is running) then immediately
- *               restarts animation ('start' is emitted regardly of whether the animation was running preveously).
- *               Returns controller for chaining.
- *
- *          stop(): function to stop animation, note animation will not stop immediately,
- *              After animaion has stopped the 'stop' will be emitted provided animation was running before
- *              stop() was called. Returns controller for chaining.
- *
- *          minRefresh: positive number defining the minimum time in miliseconds required between frames, default value is 0
- *      
- *          animating: boolean indicating whether or not animation is running, cannot be modified
- *                           
+
+**Note** If `controller.start` is called when the animation is already running then the 'start' event is not emitted. 
+
+#### Returns
+
+(Object): Return `controller` so calls can be chained. 
+
+
+#### Example
+
+```javascript
+// bind handler to animation
+controller.on('animation',function(data){
+	// render frame
+});
+
+controller.start();
+```
+
+### controller.stop()
+
+Stop animation. 
+
+**Note** If `controller.start` is called when the animation is already running then the 'start' event is not emitted. 
+
+#### Returns
+
+(Object): Return `controller` so calls can be chained. 
+
+
+#### Example
+
+```javascript
+// bind handler to end of animation
+controller.on('stop',function(data){
+	
+    console.log("There were " + data.count + " frames");
+    
+});
+
+controller.stop();
+```
+
+### controller.restart()
+
+Stop animation (if it was previously running) and then start it. 
+
+**Note** If animation was previously running then 'stop' event will be emitted and then, regardless of previous state, 'start' will be emitted.
+
+#### Returns
+
+(Object): Return `controller` so calls can be chained. 
+
+
+#### Example
+
+```javascript
+// bind handler to begining of animation
+controller.on('start',function(data){
+	
+    console.log("Animation starting");
+    
+});
+// bind handler to end of animation
+controller.on('stop',function(data){
+	
+    console.log("There were " + data.count + " frames");
+    
+});
+
+controler.start();
+
+// ... pause
+
+controller.restart(); // both handlers will run
+```               
  
 
 
