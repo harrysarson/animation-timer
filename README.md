@@ -115,30 +115,31 @@ Emits 'event' and calls all handlers attached to that event passing `data` to ea
 Returns the controller so calls can be chained.
 During animation the following events will be emitted by the controller:
 
-'start': emitted when animation starts. 
+****'start':** emitted when animation starts. 
 
 **Note** This will only be emitted if animation is not already running when controller.start() is called. 
 controller.restart() will always cause 'start' to be emitted.
 
-'animate': emitted once every frame, attach a handler to draw the frames of the animation.
+*'animate': emitted once every frame, attach a handler to draw the frames of the animation.
 
-'stop': emitted when animation stops. 
+*'stop': emitted when animation stops. 
 
 When an event is emitted by the controller the handler will be passed as the an object with these properties:
 
-time: time in milliseconds since animation started in miliseconds (calls to start after animation is already running will bot    reset this).
-deltatime: time since last frame in miliseconds.
-count: integer representing number of times animate has been emitted by the controller (i.e. the number of frames).
+*time: time in milliseconds since animation started in miliseconds (calls to start after animation is already running will bot    reset this).
+*deltatime: time since last frame in miliseconds.
+*count: integer representing number of times animate has been emitted by the controller (i.e. the number of frames).
 
 ```javascript
 // emit custom event
 controller.emit('user-input', {x: 45, y: 87});
 ```
 
+### controller.start
 
-
- *          start(): function to start animation. **Note** If start is called when the animation 
- *              is already running the animation 'stop' event is not emitted. Returns controller for chaining.
+Start animation. 
+**Note** If start is called when the animation  is already running the animation 'stop' event is not emitted. 
+Returns the controller so calls can be chained
  *
  *          restart(): stops animation ('stop' is emitted if (and only if) animation is running) then immediately
  *               restarts animation ('start' is emitted regardly of whether the animation was running preveously).
