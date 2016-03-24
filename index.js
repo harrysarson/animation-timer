@@ -156,7 +156,7 @@ module.exports = function animate(trigger) {
             configurable: true,
             get: function() { return minrefresh; },
             set: function(r) { 
-                if(r !== undefined && r >= 0) minrefresh = r;
+                if(!isNaN(r) && r >= 0) minrefresh = r;
             }   
         }
     });
