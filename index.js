@@ -107,8 +107,8 @@ module.exports = function animate(trigger) {
         deltatime = 0,
         count = 0,
         thisarg = {
-            get time      () { return time; }
-            get deltatime () { return deltatime; }
+            get time      () { return time; },
+            get deltatime () { return deltatime; },
             get count     () { return count; }
         },
         a = function () {
