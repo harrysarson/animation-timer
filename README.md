@@ -16,7 +16,7 @@ Animations can either be contained in a callback where the controller object
 is passed to the function or controlled using the 
 object returned by the function (or both in tandem)
 
-```javascript
+```JavaScript
 
 var animate = require('animation-timer');
 
@@ -31,7 +31,7 @@ var controller = animate();
 
 The animation is managed using events and handlers
 
-```javascript
+```JavaScript
 
 var car = { position: 0; }
 var speed = 0;
@@ -74,27 +74,39 @@ controller.on('animate',function(event){
 
 ## API
 
-### animation
+### `require('animation-timer2')(callback)`
 
-```javascript
-let controller = animation(function(controller){
+Creates a new animation
 
-});
-```
+#### Arguments
 
-### controller.minRefresh = 0
+1. (function): `[callback]` Function used to run animation, N.B. animation can also 
+be run via the returned object.
 
-Type: (number)
 
-Minimum time in milliseconds between frames
+#### Returns
+(Object): Returns new instance of `Controller`.
 
-### controller.animating -readonly-
 
-Type: (boolean)
+## Classes
 
-Readonly flag indicating whether the animation is running.
+### `Controller`
 
-### controller.on(event, handler)
+Object used to control animation, passed to callback and returned from animation function
+
+#### Properties
+
+* (Number): `minRefresh ` Minimum time in milliseconds between frames, initially 0.
+
+* (Boolean): `animating` Read only flag indicating whether the animation is running.
+
+* (Number): `fpsSmoothingCoefficient` Determines how much waiting is given to previous readings when calculating fps, initially 0.9 can be set to any value `0 <  fpsSmoothingCoefficient < 1`.
+
+* (Object): `data` Read only [instance of `Data`](#data) for the last 'animate' event.
+
+#### Instance Methods
+
+### `Controller#on(event, handler)`
 
 Attaches the handler to `event` so that when `event` is emitted handler will be called. Multiple handlers can be attached
 to a single event. For a list of events produced by the controller during animation
@@ -103,12 +115,12 @@ to a single event. For a list of events produced by the controller during animat
 
 #### Arguments
 
-1. `event` (string): Event to attach handler to.
+1. (string):  `event` Event to attach handler to.
 
-2. `handler` (`function`): Function to be called when `event` is emmitted
+2. (function): `handler` Function to be called when `event` is emmitted
 
 #### Returns
-(Object): Return `controller` so calls can be chained. 
+(Object): Returns `Controller` so calls can be chained. 
 
 
 #### Example
@@ -119,7 +131,7 @@ animation.on('start', function(data){
 });
 ```
 
-### controller.emit(event, [data])
+### `Controller#emit(event, [data])`
 
 Emits 'event' and calls all handlers attached to that event passing `data` to each handler.
 Returns the controller so calls can be chained.
@@ -132,23 +144,18 @@ During animation the following events will be emitted by the controller:
 
 **'stop'**: Emitted when animation stops, due to `controller.stop()` or `controller.restart()` being called whilst animation is running. 
 
-When an event is emitted by the controller the handler will be passed as the an object with these properties:
-
-* **time** Milliseconds since animation started in (calls to start after animation is already running will not reset this).
-* **deltatime** Milliseconds between last frame and this frame.
-* **count** Number of times the event 'animate' has been emitted by the controller (i.e. the number of frames).
-
+When an event is emitted by the controller the handler will be passed an [instance of `Data`](#Data) with the timing data for that frame.
 
 
 #### Arguments
 
-1. `event` (string): Event to emit
+1. (string): `event` Event to emit
 
-2. `[data = {}]` (Object): Data to send to the handler
+2. (Object): `[data = {}]` Data to send to the handler
 
 #### Returns
 
-(Object): Return `controller` so calls can be chained. 
+(Object): Returns `Controller` so calls can be chained. 
 
 
 #### Example
@@ -158,7 +165,7 @@ When an event is emitted by the controller the handler will be passed as the an 
 controller.emit('user-input', {x: 45, y: 87});
 ```
 
-### controller.start()
+### `Controller#start()`
 
 Start animation. 
 
@@ -166,7 +173,7 @@ Start animation.
 
 #### Returns
 
-(Object): Return `controller` so calls can be chained. 
+(Object): Returns `Controller` so calls can be chained. 
 
 
 #### Example
@@ -180,7 +187,7 @@ controller.on('animation',function(data){
 controller.start();
 ```
 
-### controller.stop()
+### `Controller#stop()`
 
 Stop animation. 
 
@@ -188,7 +195,7 @@ Stop animation.
 
 #### Returns
 
-(Object): Return `controller` so calls can be chained. 
+(Object): Returns `Controller` so calls can be chained. 
 
 
 #### Example
@@ -204,7 +211,7 @@ controller.on('stop',function(data){
 controller.stop();
 ```
 
-### controller.restart()
+### `Controller#restart()`
 
 Stop animation (if it was previously running) and then start it. 
 
@@ -212,7 +219,7 @@ Stop animation (if it was previously running) and then start it.
 
 #### Returns
 
-(Object): Return `controller` so calls can be chained. 
+(Object): Returns `Controller` so calls can be chained. 
 
 
 #### Example
@@ -238,6 +245,15 @@ controler.start();
 controller.restart(); // both handlers will run
 ```               
  
+### `Data`
 
+Class containing data about the timings of the animation
+
+#### Properties
+
+* (Number): `time` Milliseconds since animation started in (calls to start after animation is already running will not reset this).
+* (Number): `deltatime` Milliseconds between last frame and this frame.
+* (Integer): `count` Number of times the event 'animate' has been emitted by the controller (i.e. the number of frames).
+* (Number): `fps` Frames (i.e. number of times 'animate' event emitted) per second, calculated using a [exponentially moving average](https://en.wikipedia.org/wiki/Exponential_smoothing#Basic_exponential_smoothing). The property `fpsSmoothingCoefficient` (intially 0.9) determines the smoothing factor &#945;. This property will be innacurate for the first few frames.
 
 
