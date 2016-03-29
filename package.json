@@ -1,6 +1,6 @@
 { "name": "animation-timer2"
 , "description": "timing of animation frames"
-, "version": "0.1.2"
+, "version": "0.1.3"
 , "license" : "GPL-3.0"
 , "homepage": "https://github.com/HarrySarson/animation-timer"
 , "author": "Harry Sarson (https://harrysarson.magix.net)"
